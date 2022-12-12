@@ -35,7 +35,7 @@ class CompanyController extends Controller
     public function viewCompare()
     {
         $companies = Company::all();
-        $sectors = $companies->groupBy('sector');
+        $sectors = $companies->sortBy('symbol');
         //dump($companies);
         return view('company.compare',compact('companies'));
     }

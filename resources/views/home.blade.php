@@ -36,6 +36,12 @@
                 <h2 class="panel-title">Current Stock Market</h2>
             </header>
             <div class="panel-body">
+                @foreach($arrayRandom as $random)
+                
+                <input type="text" name="random[]" id="random" value="{{$random}}" style="display: none;">
+
+                @endforeach
+
                 <!-- Flot: Curves -->
                 <div class="chart-md pt-5" id="stockChart">
                     <span class="alert alert-warning">Content is loading......</span>
@@ -78,6 +84,7 @@
 <script>
     loadStock();
     apinews();
+    //getInputData();
 
     function apinews(){
         url = "http://192.168.0.158:5000/stocknews";
@@ -195,7 +202,7 @@
 
     function loadStock(){
 
-        var stockname = ["AAL","GOOGL","AEP","ABT","AES"];
+        var stockname = getInputData();
         todayDate  = new Date();
         monthDate  = new Date();
         oneMonthDate = monthDate.setMonth(monthDate.getMonth() - 1);
@@ -241,7 +248,11 @@
                             var dataVal = [];
 
                             $.each( value1, function( key2, value2 ) {
-                                dataVal.push(value2.toFixed(2));
+                                if(value2 == null){
+                                    dataVal.push("0");
+                                }else{
+                                    dataVal.push(value2.toFixed(2));
+                                }
                             });
 
                             var arraydata = {
@@ -285,6 +296,21 @@
 			}
 		});
         
+    }
+
+    function getInputData() {
+        var arrayNumber = [];
+        var input = document.getElementsByName('random[]');
+ 
+        for (var i = 0; i < input.length; i++) {
+            var noval = input[i].value;
+            console.log("random " + noval);
+            arrayNumber.push(noval);
+        }
+
+        console.log(arrayNumber);
+        return arrayNumber;
+
     }
 
 

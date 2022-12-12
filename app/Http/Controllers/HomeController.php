@@ -44,17 +44,20 @@ class HomeController extends Controller
 
             if (!in_array($randNumber, $arrayRandom))
             {
-                array_push($arrayRandom,$randNumber);
+                //dump($companies[$randNumber]->symbol);
+                $symbol = $companies[$randNumber]->symbol;
+                array_push($arrayRandom,$symbol);
             }
 
-            if(count($arrayRandom == 3)){
+            if(count($arrayRandom) == 3){
                 $loop = true;
             }
 
         }
 
-        dump($arrayRandom);
-        return view('home');
+        //dump($arrayRandom);
+        //return view('home');
+        return view('home', compact('arrayRandom'));
     }
 
     public function dashboard()
