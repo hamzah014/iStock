@@ -33,7 +33,7 @@
                             <div class="input-daterange input-group">
                                 <span class="input-group-addon">From</span>
                                 <input type="date" class="form-control" name="startDate" id="startDate">
-                                <span class="input-group-addon">to</span>
+                                <span class="input-group-addon">To</span>
                                 <input type="date" class="form-control" name="endDate" id="endDate">
                             </div>
                         </div>
@@ -202,6 +202,8 @@
     }
 
     function compareCompany() {
+
+        $('#stockChart').html('<span class="alert alert-warning">Please wait for data....</span>');
 
         var stockname = getInputData();
         startDate  = $('#startDate').val();

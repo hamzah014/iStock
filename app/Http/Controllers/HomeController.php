@@ -110,5 +110,20 @@ class HomeController extends Controller
         return redirect()->back();
 
     }
+
+    public function aboutus()
+    {
+        //get users - exclude admin
+        $adminRole = "admin";
+        $users = User::where('role','!=',$adminRole)->get();
+        
+        //get company 
+        $companies = Company::all();
+        
+        //get sector 
+        $sectors = $companies->groupBy('sector');
+
+        return view('aboutus', compact('users','sectors','companies'));
+    }
     
 }

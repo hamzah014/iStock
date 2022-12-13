@@ -58,7 +58,7 @@
 						</div>
                     </div>
                     <div id="stock" class="tab-pane">
-                        <p>Stock Market Data</p>
+                        <p>Stock Market Data - {{ $company->symbol }}</p>
                         <div class="panel-body">
 
 							<input type="text" name="stockname" id="stockname" hidden value="{{ $company->symbol }}">
@@ -85,6 +85,9 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<button class="btn btn-sm btn-info" onclick="testdata()">Search Data</button>
+										<div id="loading-section">
+											{{-- <span class="bg-warning well-sm well-warning"><i class="fa fa-spinner fa-spin"></i> Data is loading....</span> --}}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -97,7 +100,7 @@
                         </div>
                     </div>
                     <div id="predict" class="tab-pane">
-                        <p>Stock Price Prediction Data</p>
+                        <p>Stock Price Prediction Data - {{ $company->symbol }}</p>
                         <div class="panel-body">
 
 							<input type="text" name="stockname" id="stockname" hidden value="{{ $company->symbol }}">
@@ -127,19 +130,33 @@
 								</div>
 							</div>
 
-							<div class="row pt-3">
+							<div class="row pt-3" style="padding-top: 20px">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<h4>Year Range Prediction :</h4>
+										<h4>Time Range Prediction :</h4>
 									</div>
 								</div>
 							</div>
 
-							<div class="row pt-3">
+							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<label class="control-label text-bold">Years of Predicition</label>
-										<input type="number" name="yearPredict" id="yearPredict" class="form-control">
+										<label class="control-label text-bold">Time Predicition</label>
+										
+										<div class="form-group row">
+											<div class="col-md-6">
+												<input type="number" class="form-control" min="0" id="rangeNo" name="rangeNo" placeholder="Please enter number of range period.">
+											</div>
+											<div class="col-md-6">
+												<select name="rangeType" id="rangeType" class="form-control">
+													<option value="">Select type</option>
+													<option value="day">Day</option>
+													<option value="week">Week</option>
+													<option value="month">Month</option>
+													<option value="year">Year</option>
+												</select>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -148,6 +165,9 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<button class="btn btn-sm btn-info" type="button" onclick="predictDatas()">Search Data</button>
+										<div id="loading-section-predict">
+											{{-- <span class="bg-warning well-sm well-warning"><i class="fa fa-spinner fa-spin"></i> Data is loading....</span> --}}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -213,6 +233,8 @@
 
 		var chart = new ApexCharts(document.querySelector("#chart"), options);
 		chart.render();
+		
+		$("#loading-section").html('');
 
 	}
 
@@ -259,11 +281,15 @@
 
         var chart = new ApexCharts(document.querySelector("#predictChart"), options);
         chart.render();
+		
+		$("#loading-section-predict").html('');
 
     }
 
 	
 	function testdata(){
+
+		$("#loading-section").html('<span class="bg-warning well-sm well-warning"><i class="fa fa-spinner fa-spin"></i> Data is loading....</span>');
 
 		var stockname = $('#stockname').val();
 		var startDate = $('#startDate').val();
@@ -346,13 +372,34 @@
 
 	function predictDatas(){
 
-		$('#predictChart').html('');
+		$("#loading-section-predict").html('<span class="bg-warning well-sm well-warning"><i class="fa fa-spinner fa-spin"></i> Data is loading....</span>');
 
         var stockname = $('#stockname').val();
         var fromDate = $('#fromDate').val();
         var toDate = $('#toDate').val();
-        var years = $('#yearPredict').val();
+        var rangeNo = $('#rangeNo').val();
+        var rangeType = $('#rangeType').val();
         console.log("stock "+stockname);
+
+		var period = 0;
+
+		if(rangeType == "year"){
+
+			period = rangeNo * 365;
+
+		}else if(rangeType == "month"){
+
+			period = rangeNo * 30;
+
+		}else if(rangeType == "week"){
+
+			period = rangeNo * 7;
+
+		}else{
+
+			period = rangeNo;
+
+		}
             
         url = "http://192.168.0.158:5000/fbprophet";
 
@@ -360,7 +407,7 @@
 		    'stock':stockname,
 		    'startDate':fromDate,
 		    'lastDate':toDate,
-		    'years':years
+		    'period':period
         };
         
         $.ajax({

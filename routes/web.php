@@ -35,6 +35,8 @@ Route::get('/aboutus', function () {
     return view('aboutus');
 })->name('aboutus');
 
+Route::get('/aboutus', [HomeController::class, 'aboutus'])->name('aboutus');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth', 'role:trader','role:admin'], function() {

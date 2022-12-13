@@ -58,18 +58,15 @@
                             <div class="widget-summary">
                                 <div class="widget-summary-col widget-summary-col-icon">
                                     <div class="summary-icon">
-                                        <i class="fa fa-life-ring"></i>
+                                        <i class="fa fa-group"></i>
                                     </div>
                                 </div>
                                 <div class="widget-summary-col">
                                     <div class="summary">
-                                        <h4 class="title">Screener</h4>
+                                        <h4 class="title">Company</h4>
                                         <div class="info">
-                                            <strong class="amount">1281</strong>
+                                            <strong class="amount">{{ count($companies) }}</strong>
                                         </div>
-                                    </div>
-                                    <div class="summary-footer">
-                                        <a class="text-uppercase">(view all)</a>
                                     </div>
                                 </div>
                             </div>
@@ -82,18 +79,15 @@
                             <div class="widget-summary">
                                 <div class="widget-summary-col widget-summary-col-icon">
                                     <div class="summary-icon">
-                                        <i class="fa fa-life-ring"></i>
+                                        <i class="fa fa-suitcase"></i>
                                     </div>
                                 </div>
                                 <div class="widget-summary-col">
                                     <div class="summary">
                                         <h4 class="title">Sector</h4>
                                         <div class="info">
-                                            <strong class="amount">1281</strong>
+                                            <strong class="amount">{{ count($sectors) }}</strong>
                                         </div>
-                                    </div>
-                                    <div class="summary-footer">
-                                        <a class="text-uppercase">(view all)</a>
                                     </div>
                                 </div>
                             </div>
@@ -106,18 +100,15 @@
                             <div class="widget-summary">
                                 <div class="widget-summary-col widget-summary-col-icon">
                                     <div class="summary-icon">
-                                        <i class="fa fa-life-ring"></i>
+                                        <i class="fa fa-user"></i>
                                     </div>
                                 </div>
                                 <div class="widget-summary-col">
                                     <div class="summary">
-                                        <h4 class="title">Offered Seminar</h4>
+                                        <h4 class="title">Current User</h4>
                                         <div class="info">
-                                            <strong class="amount">1281</strong>
+                                            <strong class="amount">{{ count($users) }}</strong>
                                         </div>
-                                    </div>
-                                    <div class="summary-footer">
-                                        <a class="text-uppercase">(view all)</a>
                                     </div>
                                 </div>
                             </div>
@@ -138,13 +129,15 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2One">
-                                        <i class="fa fa-star"></i> Donec tellus massa
+                                        <i class="fa fa-question-circle"></i> What is iStock?
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapse2One" class="accordion-body collapse in">
                                 <div class="panel-body">
-                                    Donec tellus massa, tristique sit amet condim vel, facilisis quis sapien. Praesent id enim sit amet odio vulputate eleifend in in tortor. Donec tellus massa, tristique sit amet condim vel, facilisis quis sapien. Praesent id enim sit amet odio vulputate eleifend in in tortor. Donec tellus massa, tristique sit amet condim vel, facilisis quis sapien. Praesent id enim sit amet odio vulputate eleifend in in tortor. Donec tellus massa, tristique sit amet condim vel, facilisis quis sapien. Praesent id enim sit amet odio vulputate eleifend in in tortor. Donec tellus massa.
+                                    iStock provides "trading tools" to help investors choose the best stocks. 
+                                    You can add your favorite stocks from the screener created by iStock and it will display on your dashboard. <br/>
+                                    iStock also provide up-to-date news about stock market. 
                                 </div>
                             </div>
                         </div>
@@ -152,13 +145,14 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2Two">
-                                        <i class="fa fa-cogs"></i> Praesent id enim
+                                        <i class="fa fa-user"></i> How to register with iStock?
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapse2Two" class="accordion-body collapse">
                                 <div class="panel-body">
-                                    Donec tellus massa, tristique sit amet condimentum vel, facilisis quis sapien.
+                                    Log in to your iStock account using email and password. <br/>
+                                    You can also register your account by fill in requirement details.  
                                 </div>
                             </div>
                         </div>
@@ -166,13 +160,13 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2Three">
-                                        <i class="fa fa-cloud"></i> Lorem ipsum dolor
+                                        <i class="fa fa-bar-chart-o"></i> Where can I use the prediction data of stock market?
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapse2Three" class="accordion-body collapse">
                                 <div class="panel-body">
-                                    Donec tellus massa, tristique sit amet condimentum vel, facilisis quis sapien.
+                                    You can use our service prediction data after completed register and log-in into our system. 
                                 </div>
                             </div>
                         </div>
