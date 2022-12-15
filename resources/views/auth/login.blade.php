@@ -44,6 +44,7 @@
 					<div class="panel-title-sign mt-xl text-right">
 						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Sign In</h2>
 						<h2 class="title text-uppercase text-bold m-none"><a class="text-muted" href="{{ route('register') }}"><i class="fa fa-user mr-xs"></i> Sign Up</a></h2>
+						<h2 class="title text-uppercase text-bold m-none"><a class="text-muted" href="{{ route('home') }}"><i class="fa fa-home mr-xs"></i> Home</a></h2>
 					</div>
 					<div class="panel-body">
 						<form method="POST" action="{{ route('login') }}">

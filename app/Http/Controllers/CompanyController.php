@@ -137,4 +137,115 @@ class CompanyController extends Controller
         $companies = Company::where('sector',$sector)->get();
         return view('company.list_bySector',compact('companies','sector'));
     }
+
+    public function storeMultiple(Request $request)
+    {
+        $request->validate([
+            'datafile' => ['required','mimes:csv'],
+        ]);
+
+        //change collect data to array data
+        $companies = Company::select('symbol')->get()->toArray();
+
+        $dataCompany = [];
+
+        foreach($companies as $company){
+
+            array_push($dataCompany,$company['symbol']);
+
+        }
+
+        //dump($dataCompany);
+
+
+        $datafile = $request->file('datafile');
+        
+        $tmpName = $datafile->getPathName();
+
+        
+        $file = fopen($tmpName,"r");
+        $x = 0;
+        $firstline = fgets ($file, 4096 );
+        //dump($firstline);
+
+        if(str_contains($firstline, 'Symbol') && str_contains($firstline, 'Name') && str_contains($firstline, 'Sector')){
+            
+            //dump("jumpa");
+
+            $arrayData = [];
+    
+            $totalLine = 0;
+    
+            while(! feof($file))
+            {
+                $totalLine++;
+                //echo "<pre>";
+                //print_r(fgets($file, 4096));
+                $data = fgets($file, 4096);
+    
+                $values = explode("," , $data);
+    
+                //print_r($values);
+    
+                if(!empty($values[0]) && !empty($values[1]) && !empty($values[2]) ){
+    
+    
+                    $symbol = $values[0];
+                    $name = $values[1];
+                    $sector = $values[2];
+
+                    if (!in_array($symbol, $dataCompany))
+                    {
+                        //dump("tak jumpa");
+                        
+                        $company = new Company([
+                            'name' => $name,
+                            'symbol' => $symbol,
+                            'sector' => $sector,
+                        ]);
+
+                        $company->save();
+
+                        $arraydat = [
+                            "symbol" => $symbol,
+                            "name" => $name,
+                            "sector" => $sector,
+                            "status" => "success",
+                        ];
+
+
+
+                    }else{
+                        
+
+                        $arraydat = [
+                            "symbol" => $symbol,
+                            "name" => $name,
+                            "sector" => $sector,
+                            "status" => "duplicate",
+                        ];
+                        
+                    }
+    
+                }
+    
+                //array_push($arraydat,"success");
+    
+                array_push($arrayData,$arraydat);
+    
+                //echo "</pre>";
+            }
+            fclose($file);
+    
+            //dump($arrayData);
+    
+            return view('company.save_result',compact('arrayData','totalLine'));
+
+        }else{
+
+            Alert::warning('Data Incorrect', 'Please choose correct file for data company.');
+            return redirect()->back();
+        }
+
+    }
 }

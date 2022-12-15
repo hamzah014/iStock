@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth', 'role:trader','role:admin'], function() {
     //company
     Route::get('/company/register', [CompanyController::class, 'create'])->name('company.register');
     Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
+    Route::post('/company/storeMultiple', [CompanyController::class, 'storeMultiple'])->name('company.storeMultiple');
     Route::delete('/company/{id}/delete', [CompanyController::class, 'destroy'])->name('company.destroy');
     Route::get('/company/list', [CompanyController::class, 'index'])->name('company.list');
     Route::get('/company/{id}/details/', [CompanyController::class, 'details'])->name('company.details');
