@@ -16,7 +16,7 @@
     <!-- start: page -->
     <section class="panel">
     	<header class="panel-heading">
-    		<h2 class="panel-title">Compare Stock Price Company</h2>
+    		<h2 class="panel-title">Comparison Prediction Stock Price Company</h2>
     	</header>
     
         <div>
@@ -40,6 +40,37 @@
                     </div>
                     
                 </div>
+                
+				<div class="row pt-3" style="padding-top: 20px">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<h4>Time Range Prediction :</h4>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="control-label text-bold">Number of Period Predicition</label>
+							
+							<div class="form-group row">
+								<div class="col-md-6">
+									<input type="number" class="form-control" min="0" id="rangeNo" name="rangeNo" placeholder="Please enter number of range period.">
+								</div>
+								<div class="col-md-6">
+									<select name="rangeType" id="rangeType" class="form-control">
+										<option value="">Select type</option>
+										<option value="day">Day</option>
+										<option value="week">Week</option>
+										<option value="month">Month</option>
+										<option value="year">Year</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
                 <div class="row" style="padding-top: 20px">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -162,37 +193,54 @@
         $('#' + name + '').remove();
     }
 
-    
-    function showLine(datastock,dateData){
-        
-        console.log(datastock);
-        console.log(dateData);
+
+    function testline(datas,dateData,datapred){
+
+        // dataada = actualData.length - period;
+        // datapred = actualData.length - dataada;
         var options = {
-            series: datastock,
+            series: datas,
             chart: {
-            height: 350,
-            type: 'line',
-            zoom: {
-                type: 'x',
-                enabled: true,
-                autoScaleYaxis: true
+                height: 350,
+                type: 'line',
             },
+            forecastDataPoints: {
+                count: datapred
             },
-            title: {
-            text: 'Stock Market Price',
-            align: 'center'
-            },
-            markers: {
-            size: 0,
-            hover: {
-                sizeOffset: 6
-            }
+            stroke: {
+                width: 5,
+                curve: 'smooth'
             },
             xaxis: {
-            categories: dateData
+                type: 'datetime',
+                categories: dateData
             },
-            grid: {
-            borderColor: '#f1f1f1',
+            title: {
+                text: 'Comparison Prediction Data',
+                align: 'center',
+                style: {
+                    fontSize: "16px",
+                    color: '#666'
+                }
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    gradientToColors: [ '#FDD835'],
+                    shadeIntensity: 1,
+                    type: 'horizontal',
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100, 100, 100]
+                },
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
             }
         };
 
@@ -201,122 +249,155 @@
 
     }
 
+
     function compareCompany() {
 
         $('#stockChart').html('<span class="alert alert-warning">Please wait for data....</span>');
 
-        var stockname = getInputData();
+        var stocks = getInputData();
         startDate  = $('#startDate').val();
         lastDate  = $('#endDate').val();
+        var rangeNo = $('#rangeNo').val();
+        var rangeType = $('#rangeType').val();
 
         $("#error-section").html("");
 
-        console.log(stockname)
+        console.log(stocks)
 
         if(!startDate || !lastDate){
 
             console.log("date kosong");
             $("#error-section").html('<i class="text-danger">** Please complete date range.</i><br/>');
 
-        }else if(stockname == false){
+        }else if(stocks == false){
 
             console.log("date kosong");
             $("#error-section").html('<i class="text-danger">** Please select atleast 2 company.</i><br/>');
 
         }else{
+
+            $('#stockChart').html('');    
+
+            var period = 0;
+
+            if(rangeType == "year"){
+
+                period = rangeNo * 365;
+
+            }else if(rangeType == "month"){
+
+                period = rangeNo * 30;
+
+            }else if(rangeType == "week"){
+
+                period = rangeNo * 7;
+
+            }else{
+
+                period = rangeNo;
+
+            }
+            
+            allData = [];
+            datapred = 0;
+            dateData = [];
+
+            jQuery.each(stocks, function(index, stockname) {
                 
-            console.log(startDate);
-            console.log(lastDate);
-            $('#stockChart').html('');
-                
-            url = "http://192.168.0.158:5000/getStocks";
+                console.log("stock " + stockname);
+                datas = {
+                    'stock':stockname,
+                    'startDate':startDate,
+                    'lastDate':lastDate,
+                    'period':period
+                };
+            
+                let {actualData,predictData,dateData} = getAPI(datas);
+                console.log("return api");
+                console.log(predictData);
 
-            datas = {
-                'stock':stockname,
-                'startDate':startDate,
-                'lastDate':lastDate
-            };
+                result = {
+                    name : stockname,
+                    data : actualData
+                };
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify(datas),
-                crossDomain: true,
-                contentType : 'application/json',
-                success: function(result){
+                allData.push(result);
 
-                    console.log(result);
+                dataada = actualData.length - period;
+                datapred = actualData.length - dataada;
 
-                    arrayAll = [];
-                    arrayDate = [];
-                    arrayData = [];
-
-                    $.each( stockname, function( key, value ) {
-                        //console.log( key + ": " + value[0] );
-                        name = value;
-                        $.each( result, function( key1, value1 ) {
-                            keys = key1;
-                            if(keys.search("'Close', '"+name+"'") != -1){
-                                console.log("close " + name);
-                                console.log(value1);
-
-                                var dataVal = [];
-
-                                $.each( value1, function( key2, value2 ) {
-                                    if(value2 == null){
-                                        dataVal.push("0");
-                                    }else{
-                                        dataVal.push(value2.toFixed(2));
-                                    }
-                                });
-
-                                var arraydata = {
-                                                    name: name,
-                                                    data: dataVal
-                                                };
-
-                                arrayData.push(arraydata);
-
-                            }
-
-                        });
-                        
-                    });
-
-                    //get date data
-                    $.each( result, function( key, value ) {
-
-                        keys = key;
-
-                        if(keys.search("'Date', ''") != -1){
-                            //console.log("date")
-                            //console.log(value);
-                            dateVal = value;
-                            $.each( dateVal, function( key1, value1 ) {
-                                //console.log(formatDate(values));
-                                fDate = formatDate(value1);
-                                arrayDate.push(fDate);
-                            });
-                        }
-                        
-                    });
-
-                    // console.log("date ");
-                    // console.log(arrayDate);
-                    // console.log("data ");
-                    // console.log(arrayData);
-
-                    showLine(arrayData,arrayDate);
-
-                }
             });
+
+            console.log(allData);
+
+            testline(allData,dateData,datapred);
 
         }
 
         
         
     }
+
+    
+    function getAPI(datas){
+
+        url = "http://192.168.0.158:5000/fbprophet";
+
+        actualData = [];
+        predictData = [];
+        dateData = [];
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            async: false,
+            data: JSON.stringify(datas),
+            crossDomain: true,
+            contentType : 'application/json',
+            success: function(result){
+
+                console.log("start result");
+                console.log(result);
+                    
+                //console.log( "length " + Object.keys(result['Date']).length );
+
+                var arrayLength = Object.keys(result['ds']).length;
+                var loop = 0;
+
+                for (let i = 0; i < arrayLength; i++) {
+                    
+                    console.log( "date " + result['ds'][i] );
+                    console.log( "predict " + result['yhat'][i] );
+                    console.log( "actual " + result['y'][i] );
+
+                    var dateval         = formatDate(result['ds'][i]);
+                    var predictVal      = result['yhat'][i];
+
+                    if(result['y'][i] == null){
+                        actualVal = predictVal;
+                    }else{
+                        var actualVal       = result['y'][i];
+                    }
+
+                    actualData.push(actualVal.toFixed(2));
+                    predictData.push(predictVal.toFixed(2));
+                    dateData.push(dateval);
+
+                }
+
+                console.log(actualData);
+                console.log(predictData);
+                console.log(dateData);
+                //testline(actualData,predictData,dateData,years);
+
+            }
+        });
+
+        return {actualData,predictData,dateData};
+
+    }
+
 
     function getInputData() {
         var arrayNumber = [];
@@ -336,11 +417,12 @@
             return false;
 
         }else{
-
             return arrayNumber;
         }
 
     }
+
+    
 
 
 	function formatDate(date){

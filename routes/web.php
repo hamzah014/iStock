@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth', 'role:trader','role:admin'], function() {
     Route::post('/company/{id}/update', [CompanyController::class, 'update'])->name('company.update');
     Route::get('/sector/{sector}/list', [CompanyController::class, 'listbySector'])->name('sector.company.list');
     Route::get('/company/compare', [CompanyController::class, 'viewCompare'])->name('company.compare');
+    Route::get('/company/compare/predict', [CompanyController::class, 'viewComparePredict'])->name('company.comparePredict');
 
     //favorite company
     Route::get('/favorite/{id}/store', [FavoriteCompanyController::class, 'saveFavorite'])->name('favorite.store');

@@ -39,6 +39,14 @@ class CompanyController extends Controller
         //dump($companies);
         return view('company.compare',compact('companies'));
     }
+    
+    public function viewComparePredict()
+    {
+        $companies = Company::all();
+        $sectors = $companies->sortBy('symbol');
+        //dump($companies);
+        return view('company.comparePredict',compact('companies'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -224,7 +232,7 @@ class CompanyController extends Controller
                             "sector" => $sector,
                             "status" => "duplicate",
                         ];
-                        
+
                     }
     
                 }

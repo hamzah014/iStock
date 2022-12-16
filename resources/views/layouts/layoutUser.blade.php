@@ -183,6 +183,11 @@
 														Compare Company
 													</a>
 												</li>
+												<li>
+													<a href="{{ route('company.comparePredict') }}">
+														Prediction Comparison
+													</a>
+												</li>
 												{{-- <li>
 													<a href="#">
 														Company Data
