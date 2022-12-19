@@ -65,14 +65,14 @@
 				<!-- start: search & user box -->
 				<div class="header-right">
 			
-					<form action="pages-search-results.html" class="search nav-form">
+					{{-- <form action="pages-search-results.html" class="search nav-form">
 						<div class="input-group input-search">
 							<input type="text" class="form-control" name="q" id="q" placeholder="Search...">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
 							</span>
 						</div>
-					</form>
+					</form> --}}
 
 					<span class="separator"></span>
                     
@@ -84,7 +84,7 @@
 							<figure class="profile-picture">
 								<img src="{{ asset('assets/images/!happy-face.png') }}" alt="Ahmad User" class="img-circle" data-lock-picture="{{ asset('assets/images/!happy-face.png') }}" />
 							</figure>
-							<div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@JSOFT.com">
+							<div class="profile-info" data-lock-name="{{ Auth::user()->name }}" data-lock-email="{{ ucfirst(Auth::user()->role) }}">
 								<span class="name">{{ Auth::user()->name }}</span>
 								<span class="role">{{ ucfirst(Auth::user()->role) }}</span>
 							</div>
@@ -100,9 +100,9 @@
 									<a role="menuitem" tabindex="-1" href="{{ route('trader.profile') }}"><i class="fa fa-user"></i> My Profile</a>
 								</li>
 								@endif
-								<li>
+								{{-- <li>
 									<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
-								</li>
+								</li> --}}
 								<li>
                                     <form action="{{ route('logout') }}" method="POST">
                                         @csrf
@@ -321,6 +321,14 @@
 		<!-- Sweet alert- -->
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		@include('sweetalert::alert')
+
+		<script>
+
+			function unlockScreen(){
+				alert("helo");
+			}
+
+		</script>
 
         @yield('script');
 

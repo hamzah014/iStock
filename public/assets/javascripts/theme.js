@@ -697,9 +697,9 @@ window.theme = {};
 						'<div class="center-sign">',
 							'<div class="panel panel-sign">',
 								'<div class="panel-body">',
-									'<form>',
+									'<div>',
 										'<div class="current-user text-center">',
-											'<img id="LockUserPicture" src="{{picture}}" alt="John Doe" class="img-circle user-image" />',
+											'<img id="LockUserPicture" src="{{picture}}" alt="" class="img-circle user-image" />',
 											'<h2 id="LockUserName" class="user-name text-dark m-none">{{username}}</h2>',
 											'<p  id="LockUserEmail" class="user-email m-none">{{email}}</p>',
 										'</div>',
@@ -717,14 +717,14 @@ window.theme = {};
 										'<div class="row">',
 											'<div class="col-xs-6">',
 												'<p class="mt-xs mb-none">',
-													'<a href="#">Not John Doe?</a>',
+													'<a href="#">Not {{name}}?</a>',
 												'</p>',
 											'</div>',
 											'<div class="col-xs-6 text-right">',
-												'<button type="submit" class="btn btn-primary">Unlock</button>',
+												'<button onclick="unlockScreen()" class="btn btn-primary">Unlock</button>',
 											'</div>',
 										'</div>',
-									'</form>',
+									'</div>',
 								'</div>',
 							'</div>',
 						'</div>',
@@ -733,6 +733,7 @@ window.theme = {};
 				.join( '' )
 				.replace( /\{\{picture\}\}/, userinfo.picture )
 				.replace( /\{\{username\}\}/, userinfo.username )
+				.replace( /\{\{name\}\}/, userinfo.username )
 				.replace( /\{\{email\}\}/, userinfo.email );
 		}
 

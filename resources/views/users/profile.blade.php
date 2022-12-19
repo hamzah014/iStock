@@ -44,19 +44,21 @@
                     </div>
                 @endif
                 <div id="info" class="tab-pane active">
-                    <form class="form-horizontal" action="{{ route('profile.update',Auth::user()->id) }}" method="post">
+                    <form class="form-horizontal" action="{{ route('trader.profile.update',Auth::user()->id) }}" method="post">
+                        @method('POST') 
+                        @csrf
                         <h4 class="mb-xlg">Personal Information</h4>
                         <fieldset>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="profileFirstName">Full Name</label>
+                                <label class="col-md-3 control-label" for="profileFirstName">Full Name <span class="text-danger">*</span> </label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="profileAddress">Birthdate</label>
+                                <label class="col-md-3 control-label" for="profileAddress">Birthdate <span class="text-danger">*</span> </label>
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate">
+                                    <input type="date" class="form-control" id="birthdate" name="birthdate" value="@php if(!empty($profile)){ echo $profile->birthdate; } @endphp">
                                 </div>
                             </div>
                         </fieldset>
@@ -66,7 +68,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label" for="profileBio">Biographical Info</label>
                                 <div class="col-md-8">
-                                    <textarea name="bio" class="form-control" rows="3" id="bio"></textarea>
+                                    <textarea name="bio" class="form-control" rows="3" id="bio">@php if(!empty($profile)){ echo $profile->bio; } @endphp</textarea>
                                 </div>
                             </div>
                         </fieldset>
@@ -98,7 +100,7 @@
 							<div class="form-group">
 								<label class="col-md-3 control-label" for="profileNewPasswordRepeat">Repeat New Password</label>
 								<div class="col-md-8">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    <input id="password-confirm" type="password" class="form-control" name="repeat_password" required autocomplete="new-password">
 								</div>
 							</div>
 						</fieldset>

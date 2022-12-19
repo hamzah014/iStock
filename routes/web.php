@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth', 'role:trader','role:admin'], function() {
 
     //trader
     Route::get('/profile', [HomeController::class, 'profile'])->name('trader.profile');
-    Route::post('/profile/{id}/update', [HomeController::class, 'updateprofile'])->name('profile.update');
+    Route::post('/profile/{id}/update', [HomeController::class, 'profileUpdate'])->name('trader.profile.update');
     Route::post('/profile/{id}/reset/password', [HomeController::class, 'resetPassword'])->name('trader.password.reset');
 
     //screener

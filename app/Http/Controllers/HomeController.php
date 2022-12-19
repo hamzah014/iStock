@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\FavoriteCompany;
+use App\Models\UserProfile;
 
 class HomeController extends Controller
 {
@@ -86,28 +88,88 @@ class HomeController extends Controller
         $id = Auth::user()->id;
 
         $user = User::where('id',$id)->first();
+        $profile = UserProfile::where('user_id',$id)->first();
 
-        return view('users.profile',compact('user'));
+        return view('users.profile',compact('user','profile'));
 
     }
 
-    public function updateprofile($id)
+    public function profileUpdate(Request $request,$id)
     {
-        $user = User::where('id',$id)->get();
+        $request->validate([
+            'name' => ['required'],
+            'birthdate' => ['required']
+        ]);
+
+        //dump($request);
+
+        $user = User::where('id',$id)->first();
+        $userProfile = UserProfile::where('user_id',$id)->get();
         
+        //dump($user);
+        //dump(count($user));
+
+        //update table user
+        $user->name = $request->name;
+        $user->save();
+
+        $rowData = count($userProfile);
+
+        //update user profile table
+
+        if($rowData > 0){
+    
+            $profile = UserProfile::where('user_id',$id)->first();
+            $profile->birthdate = $request->birthdate;
+            $profile->bio = $request->bio;
+    
+            $profile->save();
+
+        }else{
+        
+            $profile = new UserProfile([
+                'user_id' => $id,
+                'birthdate' => $request->birthdate,
+                'bio' => $request->bio
+            ]);
+    
+            $profile->save();
+
+        }
 
         Alert::success('Profile Updated!', 'Your profile has been successfully updated.');
         return redirect()->back();
 
     }
 
-    public function updateprofile1($id)
+    public function resetPassword(Request $request,$id)
     {
-        $user = User::where('id',$id)->get();
-        
+        $request->validate([
+            'password' => ['required'],
+            'repeat_password' => ['required']
+        ]);
 
-        Alert::success('Profile Updated!', 'Your profile has been successfully updated.');
-        return redirect()->back();
+        //dump($request);
+
+        $password = $request->password;
+        $repeat_password = $request->repeat_password;
+
+        if($repeat_password == $password){
+
+
+            $user = User::where('id',$id)->first();
+            $user->password = Hash::make($password);
+            $user->save();
+
+            Alert::success('Profile Updated!', 'Your password has been successfully updated.');
+            return redirect()->back();  
+
+        }else{
+            $errors = "Password are not matched. Please try again.";
+            return redirect()->back()->withErrors($errors);
+        }
+
+
 
     }
 
