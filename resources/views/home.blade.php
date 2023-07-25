@@ -87,7 +87,7 @@
     //getInputData();
 
     function apinews(){
-        url = "http://192.168.0.158:5000/stocknews";
+        url = "http://127.0.0.1:5000/stocknews";
 
         console.log("my news api connect try...........");
 
@@ -213,7 +213,7 @@
         console.log(lastDate);
 		$('#stockChart').html('');
 			
-		url = "http://192.168.0.158:5000/getStocks";
+		url = "http://127.0.0.1:5000/getStocks";
 
 		datas = {
 			'stock':stockname,

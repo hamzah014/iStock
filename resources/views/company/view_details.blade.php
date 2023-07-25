@@ -299,7 +299,7 @@
 		console.log("last "+lastDate);
 		$('#chart').html('');
 			
-		url = "http://192.168.0.158:5000/stockData";
+		url = "http://127.0.0.1:5000/stockData";
 
 		datas = {
 			'stock':stockname,
@@ -401,7 +401,7 @@
 
 		}
             
-        url = "http://192.168.0.158:5000/fbprophet";
+        url = "http://127.0.0.1:5000/fbprophet";
 
         datas = {
 		    'stock':stockname,
